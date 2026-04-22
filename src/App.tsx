@@ -12,21 +12,27 @@ import { Slide6_Independent } from './components/slides/Slide6_Independent'
 import { Slide7_DevOpsToMLOps } from './components/slides/Slide7_DevOpsToMLOps'
 import { Slide8_Development } from './components/slides/Slide8_Development'
 import { Slide9_InteractiveDemo } from './components/slides/Slide9_InteractiveDemo'
+import { SlideLevel0_MLOps } from './components/slides/SlideLevel0_MLOps'
+import { SlideLevel1_MLOps } from './components/slides/SlideLevel1_MLOps'
+import { SlideLevel2_MLOps } from './components/slides/SlideLevel2_MLOps'
 
 type SlideComponent = React.ComponentType<{ animStep?: number }>
 
 const slides: SlideComponent[] = [
-  Slide_Presenter,   // 0
-  Slide0_History,    // 1
-  Slide1_DevOpsCICD, // 2 — animStep: 0-3 (4 acts)
-  Slide2_Roles,      // 3 — animStep: 0-7
+  Slide_Presenter,      // 0
+  Slide0_History,       // 1
+  Slide1_DevOpsCICD,    // 2 — animStep: 0-5 (6 acts)
+  Slide2_Roles,         // 3 — animStep: 0-7
   Slide3_DriftExplainer, // 4
-  Slide4_TechDebt,   // 5
-  Slide5_Lifecycle,  // 6 — animStep: 0-10
-  Slide6_Independent, // 7
+  Slide4_TechDebt,      // 5
+  Slide5_Lifecycle,     // 6 — animStep: 0-10
+  Slide6_Independent,   // 7
   Slide7_DevOpsToMLOps, // 8
-  Slide8_Development, // 9
-  Slide9_InteractiveDemo, // 10
+  SlideLevel0_MLOps,    // 9
+  SlideLevel1_MLOps,    // 10
+  SlideLevel2_MLOps,    // 11
+  Slide8_Development,   // 12
+  Slide9_InteractiveDemo, // 13
 ]
 
 // Slides that receive animStep prop (indices in slides array)

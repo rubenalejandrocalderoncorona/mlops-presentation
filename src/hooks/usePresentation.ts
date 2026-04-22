@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 
-export const TOTAL_SLIDES = 11
+export const TOTAL_SLIDES = 14
 
 // Max anim steps per slide index (0 = no sub-steps)
 const SLIDE_ANIM_STEPS: Record<number, number> = {
-  2: 3,  // DevOpsCICD (index 2): 4 acts, steps 0-3 (space advances from act 0 to 3)
+  2: 5,  // DevOpsCICD (index 2): 6 acts, steps 0-5
   3: 7,  // Roles (index 3): steps 1-6 highlight each role, 7 = all lit
   6: 10, // Lifecycle (index 6): steps 1-10 explore each stage
 }

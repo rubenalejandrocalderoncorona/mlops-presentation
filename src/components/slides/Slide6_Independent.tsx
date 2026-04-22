@@ -190,8 +190,8 @@ export function Slide6_Independent() {
   const cx = size / 2
   const cy = size / 2
   const R = 175 // radius from center to node center
-  const nodeW = 120
-  const nodeH = 90
+  const nodeW = 130
+  const nodeH = 110
 
   const positions = Array.from({ length: 6 }, (_, i) => {
     const angle = (i * 60 - 90) * (Math.PI / 180)
@@ -215,12 +215,12 @@ export function Slide6_Independent() {
         <p className="text-slate-500">{subtitle}</p>
       </motion.div>
 
-      <div className="relative mx-auto" style={{ width: size, height: size - 40 }}>
+      <div className="relative mx-auto" style={{ width: size, height: size }}>
         {/* SVG connections — square viewBox for no distortion */}
         <svg
           className="absolute inset-0"
           viewBox={`0 0 ${size} ${size}`}
-          style={{ width: size, height: size - 40 }}
+          style={{ width: size, height: size }}
         >
           {connections.map(([a, b], i) => (
             <motion.line
@@ -275,6 +275,7 @@ export function Slide6_Independent() {
                   borderColor: `${sys.color}60`,
                   boxShadow: `0 4px 16px ${sys.color}22`,
                   height: nodeH + 20,
+                  overflow: 'hidden',
                 }}
               >
                 <div className="text-center mb-1">

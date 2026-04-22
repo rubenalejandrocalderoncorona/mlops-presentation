@@ -496,6 +496,120 @@ export function Slide9_InteractiveDemo() {
           </button>
         )}
       </div>
+
+      {/* CI / CD / CT explanation strip */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.6 }}
+        className="max-w-4xl mx-auto mt-4 bg-white rounded-2xl border border-blue-100 shadow-sm p-3"
+      >
+        <div className="grid grid-cols-3 gap-3">
+
+          {/* CI column */}
+          <div className="flex flex-col gap-2">
+            <div className="self-start px-3 py-0.5 rounded-full bg-blue-600 text-white text-xs font-black tracking-wide">CI</div>
+            <div className="text-slate-500 text-center" style={{ fontSize: '9px' }}>Integración Continua</div>
+            <div className="flex flex-col gap-1.5 items-center">
+              {[
+                { label: 'lint', delay: 0 },
+                { label: 'test', delay: 0.6 },
+                { label: 'build', delay: 1.2 },
+              ].map(({ label, delay: d }) => (
+                <motion.div
+                  key={label}
+                  className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-blue-50 border border-blue-200 w-full justify-center"
+                  animate={{ opacity: [0, 1, 1, 0] }}
+                  transition={{ duration: 2.4, repeat: Infinity, delay: d, times: [0, 0.15, 0.8, 1] }}
+                >
+                  <motion.span
+                    className="text-blue-600 font-black"
+                    style={{ fontSize: '11px' }}
+                    animate={{ scale: [0.5, 1.3, 1] }}
+                    transition={{ duration: 0.35, repeat: Infinity, repeatDelay: 2.4 - 0.35, delay: d }}
+                  >
+                    ✓
+                  </motion.span>
+                  <span className="text-blue-700 font-mono" style={{ fontSize: '9px' }}>{label}</span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* CD column */}
+          <div className="flex flex-col gap-2">
+            <div className="self-start px-3 py-0.5 rounded-full bg-amber-500 text-white text-xs font-black tracking-wide">CD</div>
+            <div className="text-slate-500 text-center" style={{ fontSize: '9px' }}>Entrega / Despliegue Continuo</div>
+            <div className="flex flex-col gap-1.5">
+              {/* Delivery */}
+              <motion.div
+                className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-amber-50 border border-amber-200"
+                animate={{ boxShadow: ['0 0 0px #f59e0b00', '0 0 8px #f59e0b60', '0 0 0px #f59e0b00'] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 0 }}
+              >
+                <span style={{ fontSize: '13px' }}>🔐</span>
+                <div>
+                  <div className="text-amber-700 font-bold" style={{ fontSize: '8px' }}>Delivery</div>
+                  <div className="text-slate-400 leading-tight" style={{ fontSize: '7px' }}>aprobación manual antes de producción</div>
+                </div>
+              </motion.div>
+              {/* Deployment */}
+              <motion.div
+                className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-green-50 border border-green-200"
+                animate={{ boxShadow: ['0 0 0px #22c55e00', '0 0 8px #22c55e60', '0 0 0px #22c55e00'] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+              >
+                <motion.span
+                  style={{ fontSize: '13px', display: 'inline-block' }}
+                  animate={{ y: [-1, -3, -1] }}
+                  transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  🚀
+                </motion.span>
+                <div>
+                  <div className="text-green-700 font-bold" style={{ fontSize: '8px' }}>Deployment</div>
+                  <div className="text-slate-400 leading-tight" style={{ fontSize: '7px' }}>automático sin intervención</div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* CT column */}
+          <div className="flex flex-col gap-2">
+            <div className="self-start px-3 py-0.5 rounded-full bg-green-600 text-white text-xs font-black tracking-wide">CT</div>
+            <div className="text-slate-500 text-center" style={{ fontSize: '9px' }}>Entrenamiento Continuo</div>
+            <div className="flex flex-col items-center gap-1.5">
+              <svg viewBox="0 0 48 48" className="w-12 h-12">
+                <motion.path
+                  d="M24 8 A16 16 0 1 1 8 24"
+                  fill="none"
+                  stroke="#16a34a"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+                  style={{ transformOrigin: '24px 24px' }}
+                />
+                <motion.polygon
+                  points="8,24 2,18 14,18"
+                  fill="#16a34a"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+                  style={{ transformOrigin: '24px 24px' }}
+                />
+              </svg>
+              <motion.div
+                className="px-2 py-0.5 rounded-lg bg-green-50 border border-green-200 text-center w-full"
+                animate={{ opacity: [0.6, 1, 0.6] }}
+                transition={{ duration: 1.8, repeat: Infinity }}
+              >
+                <span className="text-green-700 font-bold" style={{ fontSize: '8px' }}>Trigger: drift detectado</span>
+              </motion.div>
+            </div>
+          </div>
+
+        </div>
+      </motion.div>
     </div>
   )
 }
