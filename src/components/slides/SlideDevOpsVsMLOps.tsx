@@ -1,40 +1,44 @@
 import { motion } from 'framer-motion'
 
-// Infinity path (figure-8): left lobe center ~(-75,0), right lobe center ~(75,0)
-// Path traced clockwise starting at the center crossing (0,0)
-const INF_PATH = "M 0,0 C 20,-65 130,-65 130,0 C 130,65 20,65 0,0 C -20,-65 -130,-65 -130,0 C -130,65 -20,65 0,0 Z"
+// Infinity path: properly traces both lobes
+// Left lobe (DEV): top-left → top → center-crossing → bottom → back
+// Right lobe (OPS): center-crossing → top → top-right → right → bottom-right → bottom → center
+// Starting at top of left lobe (-70,-65), going clockwise around left, cross at (0,0), clockwise around right
+const INF_PATH =
+  'M -70,-65 C -30,-65 -10,-30 0,0 C 10,30 30,65 70,65 C 110,65 135,35 135,0 C 135,-35 110,-65 70,-65 C 30,-65 10,-30 0,0 C -10,30 -30,65 -70,65 C -110,65 -135,35 -135,0 C -135,-35 -110,-65 -70,-65 Z'
 
-// Labels positioned along the infinity path — corrected positions
-// Left lobe (DEV): Plan top-left, Code top, Build top-right near center
-// Right lobe (OPS): Release bottom-right near center, Deploy bottom, Operate bottom-right, Monitor top-right
+// Labels placed at the correct positions around each lobe
+// DEV lobe (left): Plan(far-left-top), Code(top), Build(inner-top near crossing), Test(inner-bottom near crossing)
+// OPS lobe (right): Release(inner-top near crossing), Deploy(top), Operate(far-right-top), Monitor(far-right-bottom)
 const DEVOPS_LABELS = [
-  // Left lobe — DEV side
-  { label: 'Plan',    x: -110, y: -55 },
-  { label: 'Code',    x:  -68, y: -72 },
-  { label: 'Build',   x:  -24, y: -55 },
-  { label: 'Test',    x:    0, y:  18 },
-  // Right lobe — OPS side
-  { label: 'Release', x:   24, y: -55 },
-  { label: 'Deploy',  x:   68, y: -72 },
-  { label: 'Operate', x:  110, y: -55 },
-  { label: 'Monitor', x:  110, y:  55 },
+  { label: 'Plan',    x: -118, y: -50 },
+  { label: 'Code',    x:  -70, y: -76 },
+  { label: 'Build',   x:  -22, y: -50 },
+  { label: 'Test',    x:  -22, y:  60 },
+  { label: 'Release', x:   22, y: -50 },
+  { label: 'Deploy',  x:   70, y: -76 },
+  { label: 'Operate', x:  118, y: -50 },
+  { label: 'Monitor', x:  118, y:  60 },
 ]
 
-// MLOps triple circle path — a continuous figure-8 style loop going through all 3 circle centers
-// Circle centers: ML at (-80,0), DEV at (0,0), OPS at (80,0), radius 52 each
-// Dot travels: top of ML → top of DEV → top of OPS → bottom of OPS → bottom of DEV → bottom of ML → back
-const MLOPS_DOT_PATH = "M -80,-52 C -40,-52 -40,-52 0,-52 C 40,-52 40,-52 80,-52 C 100,-26 100,26 80,52 C 40,52 40,52 0,52 C -40,52 -40,52 -80,52 C -100,26 -100,-26 -80,-52 Z"
+// MLOps dot path: a proper ellipse-like loop that goes AROUND the outside of all 3 circles
+// Circles: ML(-80,0,r52), DEV(0,0,r52), OPS(80,0,r52)
+// The dot travels: top of ML → top of DEV → top of OPS → right of OPS → bottom of OPS
+// → bottom of DEV → bottom of ML → left of ML → back to top
+// This creates a proper continuous loop (like an oval enclosing all 3 circles)
+const MLOPS_DOT_PATH =
+  'M -80,-56 C -40,-62 40,-62 80,-56 C 105,-48 140,-28 140,0 C 140,28 105,48 80,56 C 40,62 -40,62 -80,56 C -105,48 -140,28 -140,0 C -140,-28 -105,-48 -80,-56 Z'
 
 const MLOPS_LABELS = [
-  { label: 'Model',     x: -118, y: -32 },
-  { label: 'Data',      x: -118, y:  32 },
-  { label: 'Create',    x:  -40, y: -68 },
-  { label: 'Verify',    x:  -40, y:  68 },
-  { label: 'Package',   x:   40, y:  68 },
-  { label: 'Plan',      x:   40, y: -68 },
-  { label: 'Release',   x:  118, y: -32 },
-  { label: 'Configure', x:  118, y:   8 },
-  { label: 'Monitor',   x:  118, y:  48 },
+  { label: 'Model',     x: -130, y: -28 },
+  { label: 'Data',      x: -130, y:  32 },
+  { label: 'Create',    x:  -40, y: -72 },
+  { label: 'Verify',    x:  -40, y:  74 },
+  { label: 'Package',   x:   40, y:  74 },
+  { label: 'Plan',      x:   40, y: -72 },
+  { label: 'Release',   x:  124, y: -28 },
+  { label: 'Configure', x:  130, y:   4 },
+  { label: 'Monitor',   x:  124, y:  36 },
 ]
 
 export function SlideDevOpsVsMLOps() {
@@ -55,7 +59,7 @@ export function SlideDevOpsVsMLOps() {
         </p>
       </motion.div>
 
-      {/* Two panels side by side — items-center so they don't stretch full height */}
+      {/* Two panels */}
       <div className="flex flex-row gap-6 items-start max-w-5xl mx-auto w-full">
 
         {/* LEFT: DevOps infinity loop */}
@@ -70,7 +74,7 @@ export function SlideDevOpsVsMLOps() {
             <p className="text-slate-500 text-xs">Código → Infraestructura</p>
           </div>
 
-          <svg width="290" height="190" viewBox="-145 -100 290 190">
+          <svg width="300" height="200" viewBox="-150 -100 300 195">
             <defs>
               <linearGradient id="devopsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#3b82f6" />
@@ -84,14 +88,14 @@ export function SlideDevOpsVsMLOps() {
             </defs>
 
             {/* Lobe background fills */}
-            <ellipse cx="-65" cy="0" rx="62" ry="48" fill="#eff6ff" opacity="0.6" />
-            <ellipse cx="65" cy="0" rx="62" ry="48" fill="#f0fdf4" opacity="0.6" />
+            <ellipse cx="-68" cy="0" rx="63" ry="52" fill="#eff6ff" opacity="0.7" />
+            <ellipse cx="68" cy="0" rx="63" ry="52" fill="#f0fdf4" opacity="0.7" />
 
-            {/* DEV / OPS faint labels inside lobes */}
-            <text x="-65" y="6" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1d4ed8" opacity="0.12">DEV</text>
-            <text x="65" y="6" textAnchor="middle" fontSize="22" fontWeight="900" fill="#15803d" opacity="0.12">OPS</text>
+            {/* DEV / OPS faint labels */}
+            <text x="-68" y="8" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1d4ed8" opacity="0.13">DEV</text>
+            <text x="68" y="8" textAnchor="middle" fontSize="22" fontWeight="900" fill="#15803d" opacity="0.13">OPS</text>
 
-            {/* Infinity path drawn on */}
+            {/* Infinity path */}
             <motion.path
               d={INF_PATH}
               fill="none"
@@ -108,7 +112,7 @@ export function SlideDevOpsVsMLOps() {
               <animateMotion dur="5s" repeatCount="indefinite" path={INF_PATH} />
             </motion.circle>
 
-            {/* Step labels — dark, readable */}
+            {/* Step labels */}
             {DEVOPS_LABELS.map((item, i) => (
               <motion.text
                 key={item.label}
@@ -145,7 +149,7 @@ export function SlideDevOpsVsMLOps() {
             <p className="text-slate-500 text-xs">Datos + Código → Modelo en Producción</p>
           </div>
 
-          <svg width="290" height="190" viewBox="-145 -95 290 190">
+          <svg width="300" height="200" viewBox="-150 -95 300 195">
             <defs>
               <filter id="glow2">
                 <feGaussianBlur stdDeviation="2.5" result="blur" />
@@ -153,7 +157,7 @@ export function SlideDevOpsVsMLOps() {
               </filter>
             </defs>
 
-            {/* Three overlapping circles: ML (left), DEV (center), OPS (right) */}
+            {/* Three overlapping circles: ML, DEV, OPS */}
             <motion.circle cx="-80" cy="0" r="52"
               fill="#1e293b" fillOpacity="0.88" stroke="#475569" strokeWidth="2"
               initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
@@ -173,22 +177,20 @@ export function SlideDevOpsVsMLOps() {
               style={{ transformOrigin: '80px 0px' }}
             />
 
-            {/* Center labels */}
+            {/* Center icons + labels */}
             <motion.text x="-80" y="-8" textAnchor="middle" fontSize="18" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>🧠</motion.text>
-            <motion.text x="-80" y="12" textAnchor="middle" fontSize="13" fontWeight="900" fill="white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>ML</motion.text>
-
+            <motion.text x="-80" y="14" textAnchor="middle" fontSize="13" fontWeight="900" fill="white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>ML</motion.text>
             <motion.text x="0" y="-8" textAnchor="middle" fontSize="18" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>💻</motion.text>
-            <motion.text x="0" y="12" textAnchor="middle" fontSize="13" fontWeight="900" fill="white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>DEV</motion.text>
-
+            <motion.text x="0" y="14" textAnchor="middle" fontSize="13" fontWeight="900" fill="white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>DEV</motion.text>
             <motion.text x="80" y="-8" textAnchor="middle" fontSize="18" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>⚙️</motion.text>
-            <motion.text x="80" y="12" textAnchor="middle" fontSize="13" fontWeight="900" fill="white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>OPS</motion.text>
+            <motion.text x="80" y="14" textAnchor="middle" fontSize="13" fontWeight="900" fill="white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>OPS</motion.text>
 
-            {/* Traveling dot around all 3 circles */}
+            {/* Traveling dot — loops around the outside of all 3 circles */}
             <motion.circle r="6" fill="#a5b4fc" filter="url(#glow2)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>
               <animateMotion dur="6s" repeatCount="indefinite" begin="1.5s" path={MLOPS_DOT_PATH} />
             </motion.circle>
 
-            {/* Step labels — dark and readable */}
+            {/* Step labels */}
             {MLOPS_LABELS.map((item, i) => (
               <motion.text
                 key={item.label}
