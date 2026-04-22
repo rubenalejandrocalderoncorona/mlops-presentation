@@ -16,8 +16,9 @@ import { SlideLevel0_MLOps } from './components/slides/SlideLevel0_MLOps'
 import { SlideLevel1_MLOps } from './components/slides/SlideLevel1_MLOps'
 import { SlideLevel2_MLOps } from './components/slides/SlideLevel2_MLOps'
 import { SlideRedirect } from './components/slides/SlideRedirect'
+import { SlideFinal } from './components/slides/SlideFinal'
 
-type SlideComponent = React.ComponentType<{ animStep?: number }>
+type SlideComponent = React.ComponentType<{ animStep?: number; onServerOffline?: () => void }>
 
 const slides: SlideComponent[] = [
   Slide_Presenter,       // 0
@@ -35,6 +36,7 @@ const slides: SlideComponent[] = [
   Slide8_Development,    // 12
   Slide9_InteractiveDemo, // 13
   SlideRedirect,          // 14
+  SlideFinal,             // 15
 ]
 
 // Slides that receive animStep prop (indices in slides array)
@@ -49,7 +51,10 @@ const slideVariants = {
 export default function App() {
   const { currentSlide, totalSlides, goNext, goPrev, goTo, animStep } = usePresentation()
   const CurrentSlide = slides[currentSlide]
-  const slideProps = ANIMATED_SLIDES.has(currentSlide) ? { animStep } : {}
+
+  // Redirect slide (14) gets a special onServerOffline callback
+  const slideProps: Record<string, unknown> = ANIMATED_SLIDES.has(currentSlide) ? { animStep } : {}
+  if (currentSlide === 14) slideProps.onServerOffline = goNext
 
   return (
     <div className="w-screen h-screen overflow-hidden bg-[#eef2ff] relative">
