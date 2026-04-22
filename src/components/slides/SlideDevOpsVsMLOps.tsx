@@ -1,71 +1,41 @@
 import { motion } from 'framer-motion'
 
+// Infinity path (figure-8): left lobe center ~(-75,0), right lobe center ~(75,0)
+// Path traced clockwise starting at the center crossing (0,0)
+const INF_PATH = "M 0,0 C 20,-65 130,-65 130,0 C 130,65 20,65 0,0 C -20,-65 -130,-65 -130,0 C -130,65 -20,65 0,0 Z"
+
+// Labels positioned along the infinity path — corrected positions
+// Left lobe (DEV): Plan top-left, Code top, Build top-right near center
+// Right lobe (OPS): Release bottom-right near center, Deploy bottom, Operate bottom-right, Monitor top-right
 const DEVOPS_LABELS = [
-  { label: 'Plan', angle: -135, r: 72, color: '#3b82f6' },
-  { label: 'Code', angle: -90, r: 72, color: '#6366f1' },
-  { label: 'Build', angle: -45, r: 72, color: '#8b5cf6' },
-  { label: 'Test', angle: 0, r: 72, color: '#7c3aed' },
-  { label: 'Release', angle: 45, r: 72, color: '#2563eb' },
-  { label: 'Deploy', angle: 90, r: 72, color: '#0891b2' },
-  { label: 'Operate', angle: 135, r: 72, color: '#059669' },
-  { label: 'Monitor', angle: 180, r: 72, color: '#16a34a' },
+  // Left lobe — DEV side
+  { label: 'Plan',    x: -110, y: -55 },
+  { label: 'Code',    x:  -68, y: -72 },
+  { label: 'Build',   x:  -24, y: -55 },
+  { label: 'Test',    x:    0, y:  18 },
+  // Right lobe — OPS side
+  { label: 'Release', x:   24, y: -55 },
+  { label: 'Deploy',  x:   68, y: -72 },
+  { label: 'Operate', x:  110, y: -55 },
+  { label: 'Monitor', x:  110, y:  55 },
 ]
 
-// Infinity figure-8 path points for DevOps loop
-function InfinityPath() {
-  // Two lobes centered at (-55,0) and (+55,0), radius ~55
-  return (
-    <motion.path
-      d="M 0,0 C -30,-60 -110,-60 -110,0 C -110,60 -30,60 0,0 C 30,-60 110,-60 110,0 C 110,60 30,60 0,0 Z"
-      fill="none"
-      stroke="url(#devopsGrad)"
-      strokeWidth="3"
-      strokeLinecap="round"
-      initial={{ pathLength: 0, opacity: 0 }}
-      animate={{ pathLength: 1, opacity: 1 }}
-      transition={{ duration: 2, ease: 'easeInOut', delay: 0.3 }}
-    />
-  )
-}
+// MLOps triple circle path — a continuous figure-8 style loop going through all 3 circle centers
+// Circle centers: ML at (-80,0), DEV at (0,0), OPS at (80,0), radius 52 each
+// Dot travels: top of ML → top of DEV → top of OPS → bottom of OPS → bottom of DEV → bottom of ML → back
+const MLOPS_DOT_PATH = "M -80,-52 C -40,-52 -40,-52 0,-52 C 40,-52 40,-52 80,-52 C 100,-26 100,26 80,52 C 40,52 40,52 0,52 C -40,52 -40,52 -80,52 C -100,26 -100,-26 -80,-52 Z"
 
-// Animated dot traveling along the infinity path
-function InfinityDot() {
-  return (
-    <motion.circle
-      r="5"
-      fill="#3b82f6"
-      filter="url(#glow)"
-    >
-      <animateMotion
-        dur="4s"
-        repeatCount="indefinite"
-        path="M 0,0 C -30,-60 -110,-60 -110,0 C -110,60 -30,60 0,0 C 30,-60 110,-60 110,0 C 110,60 30,60 0,0 Z"
-      />
-    </motion.circle>
-  )
-}
-
-// MLOps triple circle — 3 overlapping circles: ML, DEV, OPS
-const ML_STEPS = [
-  { label: 'Model', angle: -120 },
-  { label: 'Data', angle: 180 },
+const MLOPS_LABELS = [
+  { label: 'Model',     x: -118, y: -32 },
+  { label: 'Data',      x: -118, y:  32 },
+  { label: 'Create',    x:  -40, y: -68 },
+  { label: 'Verify',    x:  -40, y:  68 },
+  { label: 'Package',   x:   40, y:  68 },
+  { label: 'Plan',      x:   40, y: -68 },
+  { label: 'Release',   x:  118, y: -32 },
+  { label: 'Configure', x:  118, y:   8 },
+  { label: 'Monitor',   x:  118, y:  48 },
 ]
-const DEV_STEPS = [
-  { label: 'Create', angle: -120 },
-  { label: 'Verify', angle: 150 },
-  { label: 'Package', angle: 60 },
-]
-const OPS_STEPS = [
-  { label: 'Plan', angle: -60 },
-  { label: 'Release', angle: -120 },
-  { label: 'Configure', angle: 0 },
-  { label: 'Monitor', angle: 90 },
-]
-
-function angleToXY(angleDeg: number, r: number) {
-  const rad = (angleDeg * Math.PI) / 180
-  return { x: Math.cos(rad) * r, y: Math.sin(rad) * r }
-}
 
 export function SlideDevOpsVsMLOps() {
   return (
@@ -85,22 +55,22 @@ export function SlideDevOpsVsMLOps() {
         </p>
       </motion.div>
 
-      {/* Two panels side by side */}
-      <div className="flex flex-row gap-6 flex-1 min-h-0 items-stretch max-w-5xl mx-auto w-full">
+      {/* Two panels side by side — items-center so they don't stretch full height */}
+      <div className="flex flex-row gap-6 items-start max-w-5xl mx-auto w-full">
 
         {/* LEFT: DevOps infinity loop */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex-1 bg-white rounded-3xl border-2 border-blue-200 shadow-lg flex flex-col items-center justify-center py-4 px-4 gap-3"
+          className="flex-1 bg-white rounded-3xl border-2 border-blue-200 shadow-lg flex flex-col items-center py-5 px-4 gap-3"
         >
           <div className="text-center">
             <div className="inline-block px-3 py-1 bg-blue-500 text-white rounded-full text-sm font-black mb-1">DevOps</div>
             <p className="text-slate-500 text-xs">Código → Infraestructura</p>
           </div>
 
-          <svg width="280" height="180" viewBox="-140 -90 280 180">
+          <svg width="290" height="190" viewBox="-145 -100 290 190">
             <defs>
               <linearGradient id="devopsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#3b82f6" />
@@ -108,41 +78,48 @@ export function SlideDevOpsVsMLOps() {
                 <stop offset="100%" stopColor="#059669" />
               </linearGradient>
               <filter id="glow">
-                <feGaussianBlur stdDeviation="2" result="blur" />
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
                 <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
               </filter>
             </defs>
 
-            {/* DEV and OPS labels in each lobe */}
-            <motion.text x="-55" y="6" textAnchor="middle" fontSize="20" fontWeight="900" fill="#1e3a5f" opacity="0.15"
-              initial={{ opacity: 0 }} animate={{ opacity: 0.15 }} transition={{ delay: 1.5 }}>DEV</motion.text>
-            <motion.text x="55" y="6" textAnchor="middle" fontSize="20" fontWeight="900" fill="#1e3a5f" opacity="0.15"
-              initial={{ opacity: 0 }} animate={{ opacity: 0.15 }} transition={{ delay: 1.5 }}>OPS</motion.text>
+            {/* Lobe background fills */}
+            <ellipse cx="-65" cy="0" rx="62" ry="48" fill="#eff6ff" opacity="0.6" />
+            <ellipse cx="65" cy="0" rx="62" ry="48" fill="#f0fdf4" opacity="0.6" />
 
-            <InfinityPath />
-            <InfinityDot />
+            {/* DEV / OPS faint labels inside lobes */}
+            <text x="-65" y="6" textAnchor="middle" fontSize="22" fontWeight="900" fill="#1d4ed8" opacity="0.12">DEV</text>
+            <text x="65" y="6" textAnchor="middle" fontSize="22" fontWeight="900" fill="#15803d" opacity="0.12">OPS</text>
 
-            {/* Step labels around the loops */}
-            {[
-              { label: 'Plan', x: -95, y: -55 },
-              { label: 'Code', x: -55, y: -68 },
-              { label: 'Build', x: -10, y: -48 },
-              { label: 'Test', x: 10, y: -48 },
-              { label: 'Release', x: 10, y: 50 },
-              { label: 'Deploy', x: 55, y: 68 },
-              { label: 'Operate', x: 95, y: 55 },
-              { label: 'Monitor', x: 95, y: -55 },
-            ].map((item, i) => (
+            {/* Infinity path drawn on */}
+            <motion.path
+              d={INF_PATH}
+              fill="none"
+              stroke="url(#devopsGrad)"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 2.2, ease: 'easeInOut', delay: 0.3 }}
+            />
+
+            {/* Traveling dot */}
+            <motion.circle r="6" fill="#6366f1" filter="url(#glow)">
+              <animateMotion dur="5s" repeatCount="indefinite" path={INF_PATH} />
+            </motion.circle>
+
+            {/* Step labels — dark, readable */}
+            {DEVOPS_LABELS.map((item, i) => (
               <motion.text
                 key={item.label}
                 x={item.x} y={item.y}
                 textAnchor="middle"
-                fontSize="9"
-                fontWeight="700"
-                fill="#374151"
+                fontSize="10"
+                fontWeight="800"
+                fill="#1e293b"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 + i * 0.1, duration: 0.4 }}
+                transition={{ delay: 1.0 + i * 0.1, duration: 0.4 }}
               >
                 {item.label}
               </motion.text>
@@ -161,82 +138,68 @@ export function SlideDevOpsVsMLOps() {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex-1 bg-white rounded-3xl border-2 border-indigo-200 shadow-lg flex flex-col items-center justify-center py-4 px-4 gap-3"
+          className="flex-1 bg-white rounded-3xl border-2 border-indigo-200 shadow-lg flex flex-col items-center py-5 px-4 gap-3"
         >
           <div className="text-center">
             <div className="inline-block px-3 py-1 bg-indigo-600 text-white rounded-full text-sm font-black mb-1">MLOps</div>
             <p className="text-slate-500 text-xs">Datos + Código → Modelo en Producción</p>
           </div>
 
-          <svg width="300" height="180" viewBox="-150 -90 300 180">
+          <svg width="290" height="190" viewBox="-145 -95 290 190">
             <defs>
-              <linearGradient id="mlGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#1e293b" />
-                <stop offset="100%" stopColor="#374151" />
-              </linearGradient>
+              <filter id="glow2">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
             </defs>
 
             {/* Three overlapping circles: ML (left), DEV (center), OPS (right) */}
-            {/* ML circle */}
-            <motion.circle cx="-65" cy="0" r="58"
-              fill="#1e293b" fillOpacity="0.85" stroke="#334155" strokeWidth="2"
+            <motion.circle cx="-80" cy="0" r="52"
+              fill="#1e293b" fillOpacity="0.88" stroke="#475569" strokeWidth="2"
               initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.6, type: 'spring', stiffness: 120 }}
-              style={{ transformOrigin: '-65px 0px' }}
+              style={{ transformOrigin: '-80px 0px' }}
             />
-            {/* DEV circle */}
-            <motion.circle cx="0" cy="0" r="58"
-              fill="#1e3a6e" fillOpacity="0.85" stroke="#2563eb" strokeWidth="2"
+            <motion.circle cx="0" cy="0" r="52"
+              fill="#1e3a8a" fillOpacity="0.88" stroke="#2563eb" strokeWidth="2"
               initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.55, duration: 0.6, type: 'spring', stiffness: 120 }}
               style={{ transformOrigin: '0px 0px' }}
             />
-            {/* OPS circle */}
-            <motion.circle cx="65" cy="0" r="58"
-              fill="#94a3b8" fillOpacity="0.7" stroke="#64748b" strokeWidth="2"
+            <motion.circle cx="80" cy="0" r="52"
+              fill="#64748b" fillOpacity="0.88" stroke="#94a3b8" strokeWidth="2"
               initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.7, duration: 0.6, type: 'spring', stiffness: 120 }}
-              style={{ transformOrigin: '65px 0px' }}
+              style={{ transformOrigin: '80px 0px' }}
             />
 
             {/* Center labels */}
-            <motion.text x="-65" y="4" textAnchor="middle" fontSize="14" fontWeight="900" fill="white"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>ML</motion.text>
-            <motion.text x="0" y="4" textAnchor="middle" fontSize="14" fontWeight="900" fill="white"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>DEV</motion.text>
-            <motion.text x="65" y="4" textAnchor="middle" fontSize="14" fontWeight="900" fill="white"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>OPS</motion.text>
+            <motion.text x="-80" y="-8" textAnchor="middle" fontSize="18" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>🧠</motion.text>
+            <motion.text x="-80" y="12" textAnchor="middle" fontSize="13" fontWeight="900" fill="white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>ML</motion.text>
 
-            {/* Icons (emoji via foreignObject not reliable in SVG, use text symbols) */}
-            <motion.text x="-65" y="-12" textAnchor="middle" fontSize="18"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }}>🧠</motion.text>
-            <motion.text x="0" y="-12" textAnchor="middle" fontSize="18"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}>💻</motion.text>
-            <motion.text x="65" y="-12" textAnchor="middle" fontSize="18"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>⚙️</motion.text>
+            <motion.text x="0" y="-8" textAnchor="middle" fontSize="18" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>💻</motion.text>
+            <motion.text x="0" y="12" textAnchor="middle" fontSize="13" fontWeight="900" fill="white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>DEV</motion.text>
 
-            {/* Step labels around circles */}
-            {[
-              { label: 'Model', x: -95, y: -52 },
-              { label: 'Data', x: -100, y: 45 },
-              { label: 'Create', x: -32, y: -72 },
-              { label: 'Verify', x: -28, y: 72 },
-              { label: 'Package', x: 25, y: 72 },
-              { label: 'Plan', x: 30, y: -72 },
-              { label: 'Release', x: 95, y: -52 },
-              { label: 'Configure', x: 112, y: 0 },
-              { label: 'Monitor', x: 95, y: 52 },
-            ].map((item, i) => (
+            <motion.text x="80" y="-8" textAnchor="middle" fontSize="18" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>⚙️</motion.text>
+            <motion.text x="80" y="12" textAnchor="middle" fontSize="13" fontWeight="900" fill="white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>OPS</motion.text>
+
+            {/* Traveling dot around all 3 circles */}
+            <motion.circle r="6" fill="#a5b4fc" filter="url(#glow2)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>
+              <animateMotion dur="6s" repeatCount="indefinite" begin="1.5s" path={MLOPS_DOT_PATH} />
+            </motion.circle>
+
+            {/* Step labels — dark and readable */}
+            {MLOPS_LABELS.map((item, i) => (
               <motion.text
                 key={item.label}
                 x={item.x} y={item.y}
                 textAnchor="middle"
-                fontSize="9"
-                fontWeight="700"
-                fill="#e2e8f0"
+                fontSize="10"
+                fontWeight="800"
+                fill="#1e293b"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1.2 + i * 0.08 }}
+                transition={{ delay: 1.3 + i * 0.08 }}
               >
                 {item.label}
               </motion.text>
@@ -256,7 +219,7 @@ export function SlideDevOpsVsMLOps() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.6, duration: 0.5 }}
-        className="mt-3 max-w-5xl mx-auto w-full grid grid-cols-2 gap-4 text-center"
+        className="mt-4 max-w-5xl mx-auto w-full grid grid-cols-2 gap-4 text-center"
       >
         <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-2">
           <span className="text-blue-700 font-bold text-sm">DevOps</span>

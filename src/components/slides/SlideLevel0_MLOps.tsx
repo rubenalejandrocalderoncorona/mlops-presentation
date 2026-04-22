@@ -19,13 +19,13 @@ function Arrow() {
 
 export function SlideLevel0_MLOps() {
   return (
-    <div className="slide-container px-8 flex flex-col bg-[#eef2ff]">
+    <div className="slide-container px-8 bg-[#eef2ff]">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-center mb-5"
+        className="text-center mb-5 w-full max-w-5xl"
       >
         <h1 className="text-4xl font-black text-slate-800 mb-1">
           MLOps <span className="text-red-500">Nivel 0</span>: Proceso Manual
@@ -35,7 +35,7 @@ export function SlideLevel0_MLOps() {
         </p>
       </motion.div>
 
-      <div className="flex flex-row gap-3 flex-1 min-h-0">
+      <div className="flex flex-row gap-3 w-full max-w-5xl">
         {/* Main content */}
         <div className="flex-1 min-w-0 flex flex-col gap-5">
           {/* Workflow boxes */}
@@ -144,6 +144,95 @@ export function SlideLevel0_MLOps() {
           </ul>
         </motion.div>
       </div>
+
+      {/* CI / CD / CT strip */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.4, duration: 0.5 }}
+        className="mt-3 grid grid-cols-3 gap-2 w-full max-w-5xl"
+      >
+        {/* Column 1 — CI */}
+        <div className="bg-white border border-blue-200 rounded-xl p-2 flex flex-col gap-1">
+          <div className="self-start px-2 py-0.5 rounded-full bg-blue-500 text-white font-bold" style={{ fontSize: '10px' }}>
+            CI — Integración Continua
+          </div>
+          <div className="flex flex-col gap-0.5 mt-0.5">
+            {[
+              { label: 'lint', delay: 0 },
+              { label: 'test', delay: 0.8 },
+              { label: 'build', delay: 1.6 },
+            ].map(({ label, delay: d }) => (
+              <motion.div
+                key={label}
+                className="flex items-center gap-1 bg-blue-50 border border-blue-200 rounded-lg px-2 py-0.5 text-xs"
+                animate={{ opacity: [0, 1, 1, 0] }}
+                transition={{ duration: 2.4, delay: d, repeat: Infinity }}
+              >
+                <span className="text-blue-500 font-bold">✓</span>
+                <span className="text-blue-700">{label}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Column 2 — CD */}
+        <div className="bg-white border border-amber-200 rounded-xl p-2 flex flex-col gap-1">
+          <div className="self-start px-2 py-0.5 rounded-full bg-amber-500 text-white font-bold" style={{ fontSize: '10px' }}>
+            CD — Despliegue Continuo
+          </div>
+          <div className="grid grid-cols-2 gap-1 mt-1">
+            <div className="border border-amber-400 rounded-lg px-1.5 py-1 flex flex-col items-center gap-0.5">
+              <span style={{ fontSize: '13px' }}>🔒</span>
+              <span className="text-amber-700 font-bold" style={{ fontSize: '9px' }}>Delivery</span>
+              <span className="text-slate-500 text-center leading-tight" style={{ fontSize: '9px' }}>Aprobación manual antes de producción</span>
+            </div>
+            <div className="border border-green-500 rounded-lg px-1.5 py-1 flex flex-col items-center gap-0.5">
+              <motion.span
+                animate={{ y: [0, -3, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ fontSize: '13px' }}
+              >
+                🚀
+              </motion.span>
+              <span className="text-green-700 font-bold" style={{ fontSize: '9px' }}>Deployment</span>
+              <span className="text-slate-500 text-center leading-tight" style={{ fontSize: '9px' }}>Automático sin intervención humana</span>
+            </div>
+          </div>
+          <div className="text-center text-slate-400" style={{ fontSize: '8px' }}>← manual gate | auto →</div>
+        </div>
+
+        {/* Column 3 — CT */}
+        <div className="bg-white border border-green-200 rounded-xl p-2 flex flex-col gap-1">
+          <div className="self-start px-2 py-0.5 rounded-full bg-green-600 text-white font-bold" style={{ fontSize: '10px' }}>
+            CT — Entrenamiento Continuo
+          </div>
+          <div className="flex justify-center mt-1">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+            >
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+                <path d="M12 2 A10 10 0 1 1 4 17" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" />
+                <polygon points="4,17 1,13 7,13" fill="#059669" />
+              </svg>
+            </motion.div>
+          </div>
+          <div className="flex justify-center">
+            <motion.span
+              className="px-2 py-0.5 rounded-full bg-amber-100 border border-amber-400 text-amber-700 font-bold"
+              style={{ fontSize: '9px' }}
+              animate={{ opacity: [1, 0.4, 1] }}
+              transition={{ duration: 1.4, repeat: Infinity }}
+            >
+              Trigger: deriva detectada
+            </motion.span>
+          </div>
+          <p className="text-slate-500 text-center leading-tight" style={{ fontSize: '9px' }}>
+            Reentrena automáticamente el modelo cuando el contexto cambia
+          </p>
+        </div>
+      </motion.div>
     </div>
   )
 }

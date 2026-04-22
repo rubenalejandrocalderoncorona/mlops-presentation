@@ -89,13 +89,13 @@ export function SlideLevel2_MLOps() {
   }, [])
 
   return (
-    <div className="slide-container px-8 flex flex-col bg-[#eef2ff]">
+    <div className="slide-container px-8 bg-[#eef2ff]">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-center mb-2"
+        className="text-center mb-2 w-full max-w-5xl"
       >
         <h1 className="text-4xl font-black text-slate-800 mb-0.5">
           MLOps <span className="text-indigo-600">Nivel 2</span>: Automatización CI/CD
@@ -105,7 +105,7 @@ export function SlideLevel2_MLOps() {
         </p>
       </motion.div>
 
-      <div className="flex flex-row gap-3 flex-1 min-h-0">
+      <div className="flex flex-row gap-3 w-full max-w-5xl">
         {/* Main diagram */}
         <div className="flex-1 min-w-0 flex flex-col gap-2.5">
 
