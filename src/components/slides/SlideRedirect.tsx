@@ -12,29 +12,22 @@ export function SlideRedirect({ onServerOffline }: SlideRedirectProps) {
 
   useEffect(() => {
     let cancelled = false
-    // WebSocket to Vite's HMR port — opens instantly if server is up,
-    // fires onerror immediately if connection is refused.
-    const ws = new WebSocket('ws://localhost:5174')
+    // Probe via image tag — bypasses CORS, onload = server up, onerror = down
+    const img = new Image()
     const timer = setTimeout(() => {
-      ws.close()
+      img.src = ''
       if (!cancelled) { setServer('offline'); onServerOffline?.() }
     }, 3000)
-
-    ws.onopen = () => {
+    img.onload = () => {
       clearTimeout(timer)
-      ws.close()
       if (!cancelled) setServer('online')
     }
-    ws.onerror = () => {
+    img.onerror = () => {
       clearTimeout(timer)
       if (!cancelled) { setServer('offline'); onServerOffline?.() }
     }
-
-    return () => {
-      cancelled = true
-      clearTimeout(timer)
-      ws.close()
-    }
+    img.src = `http://localhost:5174/favicon.svg?_=${Date.now()}`
+    return () => { cancelled = true; clearTimeout(timer); img.src = '' }
   }, [onServerOffline])
 
   const handleOpen = () => window.open('http://localhost:5174', '_blank')
