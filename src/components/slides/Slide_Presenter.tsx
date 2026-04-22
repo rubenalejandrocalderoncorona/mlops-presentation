@@ -156,7 +156,7 @@ export function Slide_Presenter() {
                 <br />
                 Calderon Corona
               </h1>
-              <p className="text-slate-500 text-base">MLOps · Data Engineering · AI in Production</p>
+              <p className="text-slate-500 text-base">DevOps Observability Engineer en SAP</p>
             </div>
 
             {/* Presentation title card */}
@@ -165,7 +165,7 @@ export function Slide_Presenter() {
                 Presentación
               </div>
               <div className="text-xl font-black text-slate-800">
-                MLOps: De DevOps al ML en Producción
+                MLOps: La optimización de procesos de IA
               </div>
             </div>
 

@@ -10,7 +10,14 @@ const SLIDE_ANIM_STEPS: Record<number, number> = {
 }
 
 export function usePresentation() {
-  const [currentSlide, setCurrentSlide] = useState(0)
+  // Read initial slide from URL hash: #slide=15
+  const initialSlide = (() => {
+    const m = window.location.hash.match(/slide=(\d+)/)
+    if (m) { const n = parseInt(m[1]); return Math.max(0, Math.min(n, TOTAL_SLIDES - 1)) }
+    return 0
+  })()
+
+  const [currentSlide, setCurrentSlide] = useState(initialSlide)
   const [animStep, setAnimStep] = useState(0)
 
   // Keep refs in sync so keydown handler always reads current values
