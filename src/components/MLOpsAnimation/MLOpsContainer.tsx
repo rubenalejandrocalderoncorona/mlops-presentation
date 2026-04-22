@@ -68,21 +68,23 @@ export function MLOpsContainer() {
       viewBox={`0 0 ${VB_W} ${VB_H}`}
       preserveAspectRatio="xMidYMid meet"
       className="w-full h-full"
-      style={{ overflow: 'visible' }}
     >
       {/* ── Section backgrounds ─────────────────────────────────────── */}
-      <rect x={20} y={20} width={360} height={195} rx={16}
+      {/* DataML box: lobe centers at (125,117) and (285,117), R=62 → x: 125-62-30=33, y: 117-62-30=25, w: 285+62+30-33=344, h: 62*2+60=184 */}
+      <rect x={18} y={18} width={366} height={202} rx={16}
         fill="white" fillOpacity={0.6} stroke="#fde68a" strokeWidth={1.5} />
-      <rect x={20} y={265} width={360} height={195} rx={16}
+      {/* DevOps box: lobe centers at (125,370) and (285,370), R=62 */}
+      <rect x={18} y={262} width={366} height={220} rx={16}
         fill="white" fillOpacity={0.6} stroke="#bfdbfe" strokeWidth={1.5} />
-      <rect x={430} y={20} width={460} height={440} rx={20}
+      {/* Knot box: K_ML=(520,127), K_OPS=(750,127), K_DATA=(520,363), K_DEV=(750,363), KR=90 */}
+      <rect x={415} y={18} width={430} height={464} rx={20}
         fill="white" fillOpacity={0.7} stroke="#c7d2fe" strokeWidth={2} />
 
       {/* ── Section badge labels ─────────────────────────────────────── */}
       {[
-        { x: 55,  y: 36, text: 'DataML',  bg: '#d97706', textCol: 'white' },
-        { x: 55,  y: 281, text: 'DevOps',  bg: '#3b82f6', textCol: 'white' },
-        { x: 470, y: 36, text: 'MLOps',   bg: '#6366f1', textCol: 'white' },
+        { x: 60,  y: 36,  text: 'DataML', bg: '#d97706', textCol: 'white' },
+        { x: 60,  y: 280, text: 'DevOps', bg: '#3b82f6', textCol: 'white' },
+        { x: 460, y: 36,  text: 'MLOps',  bg: '#6366f1', textCol: 'white' },
       ].map(({ x, y, text, bg, textCol }) => (
         <motion.g key={text} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
           <rect x={x - 30} y={y - 12} width={60} height={18} rx={9} fill={bg} />
@@ -135,7 +137,7 @@ export function MLOpsContainer() {
       />
 
       {/* ── Plus operator ───────────────────────────────────────────── */}
-      <Operator x={200} y={240} text="+" />
+      <Operator x={201} y={244} text="+" />
 
       {/* ── Arrow ───────────────────────────────────────────────────── */}
       <motion.g
@@ -143,9 +145,9 @@ export function MLOpsContainer() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.1, duration: 0.5 }}
       >
-        <line x1={393} y1={238} x2={425} y2={238} stroke="#94a3b8" strokeWidth={2.5} strokeLinecap="round" />
-        <polygon points="425,232 435,238 425,244" fill="#94a3b8" />
-        <text x={412} y={255} textAnchor="middle" fontSize={8} fill="#94a3b8" fontWeight="700">=</text>
+        <line x1={390} y1={244} x2={408} y2={244} stroke="#94a3b8" strokeWidth={2.5} strokeLinecap="round" />
+        <polygon points="408,238 418,244 408,250" fill="#94a3b8" />
+        <text x={403} y={260} textAnchor="middle" fontSize={8} fill="#94a3b8" fontWeight="700">=</text>
       </motion.g>
 
       {/* ── MLOps knot (right) ───────────────────────────────────────── */}
@@ -155,10 +157,10 @@ export function MLOpsContainer() {
         gradId="knotGrad"
         delay={0.8}
       />
-      <CircleNode cx={K_ML.x}   cy={K_ML.y}   r={K_ML.r}   fill={COLOR.ml}   stroke={COLOR.ml}   label="ML"   icon="🧠" delay={1.0} />
-      <CircleNode cx={K_OPS.x}  cy={K_OPS.y}  r={K_OPS.r}  fill={COLOR.ops}  stroke={COLOR.ops}  label="Ops"  icon="⚙️" delay={1.1} />
-      <CircleNode cx={K_DATA.x} cy={K_DATA.y} r={K_DATA.r} fill={COLOR.data} stroke={COLOR.data} label="Data" icon="☁️" delay={1.2} />
-      <CircleNode cx={K_DEV.x}  cy={K_DEV.y}  r={K_DEV.r}  fill={COLOR.dev}  stroke={COLOR.dev}  label="Dev"  icon="💻" delay={1.3} />
+      <CircleNode cx={K_ML.x}   cy={K_ML.y}   r={52} fill={COLOR.ml}   stroke={COLOR.ml}   label="ML"   icon="🧠" delay={1.0} />
+      <CircleNode cx={K_OPS.x}  cy={K_OPS.y}  r={52} fill={COLOR.ops}  stroke={COLOR.ops}  label="Ops"  icon="⚙️" delay={1.1} />
+      <CircleNode cx={K_DATA.x} cy={K_DATA.y} r={52} fill={COLOR.data} stroke={COLOR.data} label="Data" icon="☁️" delay={1.2} />
+      <CircleNode cx={K_DEV.x}  cy={K_DEV.y}  r={52} fill={COLOR.dev}  stroke={COLOR.dev}  label="Dev"  icon="💻" delay={1.3} />
 
       {KNOT_STAGES.map(s => (
         <StageLabel key={s.label + 'knot'} stage={s} active={isActive(s, knotProgress)} />

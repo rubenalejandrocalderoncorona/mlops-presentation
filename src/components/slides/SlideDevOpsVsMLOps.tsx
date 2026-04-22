@@ -21,7 +21,7 @@ export function SlideDevOpsVsMLOps() {
 
       {/* Animation — fills remaining height */}
       <motion.div
-        className="flex-1 min-h-0 w-full max-w-5xl mx-auto"
+        className="flex-1 min-h-0 w-full max-w-5xl mx-auto flex items-center justify-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.6 }}

@@ -7,7 +7,6 @@ import { Slide1_DevOpsCICD } from './components/slides/Slide1_DevOpsCICD'
 import { Slide2_Roles } from './components/slides/Slide2_Roles'
 import { Slide3_DriftExplainer } from './components/slides/Slide3_DriftExplainer'
 import { Slide4_TechDebt } from './components/slides/Slide4_TechDebt'
-import { SlideDevOpsVsMLOps } from './components/slides/SlideDevOpsVsMLOps'
 import { Slide5_Lifecycle } from './components/slides/Slide5_Lifecycle'
 import { Slide6_Independent } from './components/slides/Slide6_Independent'
 import { Slide7_DevOpsToMLOps } from './components/slides/Slide7_DevOpsToMLOps'
@@ -20,25 +19,24 @@ import { SlideLevel2_MLOps } from './components/slides/SlideLevel2_MLOps'
 type SlideComponent = React.ComponentType<{ animStep?: number }>
 
 const slides: SlideComponent[] = [
-  Slide_Presenter,      // 0
-  Slide0_History,       // 1
-  Slide1_DevOpsCICD,    // 2 — animStep: 0-5 (6 acts)
-  Slide2_Roles,         // 3 — animStep: 0-7
+  Slide_Presenter,       // 0
+  Slide0_History,        // 1
+  Slide1_DevOpsCICD,     // 2 — animStep: 0-5
+  Slide2_Roles,          // 3 — animStep: 0-7
   Slide3_DriftExplainer, // 4
-  Slide4_TechDebt,      // 5
-  SlideDevOpsVsMLOps,   // 6  ← NEW
-  Slide5_Lifecycle,     // 7 — animStep: 0-10
-  Slide6_Independent,   // 8
-  Slide7_DevOpsToMLOps, // 9
-  SlideLevel0_MLOps,    // 10
-  SlideLevel1_MLOps,    // 11
-  SlideLevel2_MLOps,    // 12
-  Slide8_Development,   // 13
-  Slide9_InteractiveDemo, // 14
+  Slide4_TechDebt,       // 5
+  Slide5_Lifecycle,      // 6 — animStep: 0-10
+  Slide6_Independent,    // 7
+  Slide7_DevOpsToMLOps,  // 8
+  SlideLevel0_MLOps,     // 9
+  SlideLevel1_MLOps,     // 10
+  SlideLevel2_MLOps,     // 11
+  Slide8_Development,    // 12
+  Slide9_InteractiveDemo, // 13
 ]
 
 // Slides that receive animStep prop (indices in slides array)
-const ANIMATED_SLIDES = new Set([2, 3, 7])
+const ANIMATED_SLIDES = new Set([2, 3, 6])
 
 const slideVariants = {
   enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
