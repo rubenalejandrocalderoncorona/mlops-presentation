@@ -285,30 +285,33 @@ export function Slide9_InteractiveDemo() {
       </AnimatePresence>
 
       {/* Pipeline stages */}
-      <div className="relative max-w-5xl mx-auto mb-3">
-        {/* Connector track */}
-        <div className="absolute top-10 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-blue-200 via-indigo-300 to-red-200 rounded" />
+      <div className="max-w-5xl mx-auto mb-3">
+        {/* Track row — sits visually above stage boxes */}
+        <div className="relative h-8 mb-1 flex items-center px-[10%]">
+          {/* Track line */}
+          <div className="absolute inset-x-[10%] top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-blue-200 via-indigo-300 to-red-200 rounded" />
 
-        {/* Animated packet on track */}
-        <AnimatePresence>
-          {showPacket && (
-            <motion.div
-              className="absolute top-7 z-20"
-              style={{ left: `${10 + (packetStage / 4) * 80}%` }}
-              animate={{ left: `${10 + (Math.min(packetStage + 1, 4) / 4) * 80}%` }}
-              transition={{ duration: 0.55, ease: 'easeInOut' }}
-            >
+          {/* Animated packet on track */}
+          <AnimatePresence>
+            {showPacket && (
               <motion.div
-                className="w-5 h-5 rounded-full bg-indigo-500 border-2 border-white shadow-lg"
-                animate={{
-                  scale: [1, 1.3, 1],
-                  boxShadow: ['0 0 6px #6366f180', '0 0 18px #6366f1', '0 0 6px #6366f180'],
-                }}
-                transition={{ duration: 0.5, repeat: Infinity }}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+                className="absolute top-1/2 -translate-y-1/2 z-10"
+                style={{ left: `calc(10% + ${(packetStage / 4) * 80}%)` }}
+                animate={{ left: `calc(10% + ${(Math.min(packetStage + 1, 4) / 4) * 80}%)` }}
+                transition={{ duration: 0.55, ease: 'easeInOut' }}
+              >
+                <motion.div
+                  className="w-5 h-5 rounded-full bg-indigo-500 border-2 border-white shadow-lg"
+                  animate={{
+                    scale: [1, 1.3, 1],
+                    boxShadow: ['0 0 6px #6366f180', '0 0 18px #6366f1', '0 0 6px #6366f180'],
+                  }}
+                  transition={{ duration: 0.5, repeat: Infinity }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
         <div className="grid grid-cols-5 gap-3">
           {/* Stage 1: Raw Data */}
@@ -496,6 +499,102 @@ export function Slide9_InteractiveDemo() {
           </button>
         )}
       </div>
+
+      {/* CI / CD / CT strip */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        className="mt-3 grid grid-cols-3 gap-2 max-w-4xl mx-auto w-full"
+      >
+        {/* Column 1 — CI */}
+        <div className="bg-white border border-blue-200 rounded-xl p-2 flex flex-col gap-1">
+          <div className="self-start px-2 py-0.5 rounded-full bg-blue-500 text-white font-bold" style={{ fontSize: '10px' }}>
+            CI — Integración Continua
+          </div>
+          <div className="flex flex-col gap-0.5 mt-0.5">
+            {[
+              { label: 'lint', delay: 0 },
+              { label: 'test', delay: 0.8 },
+              { label: 'build', delay: 1.6 },
+            ].map(({ label, delay: d }) => (
+              <motion.div
+                key={label}
+                className="flex items-center gap-1 bg-blue-50 border border-blue-200 rounded-lg px-2 py-0.5 text-xs"
+                animate={{ opacity: [0, 1, 1, 0] }}
+                transition={{ duration: 2.4, delay: d, repeat: Infinity }}
+              >
+                <span className="text-blue-500 font-bold">✓</span>
+                <span className="text-blue-700">{label}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Column 2 — CD */}
+        <div className="bg-white border border-amber-200 rounded-xl p-2 flex flex-col gap-1">
+          <div className="self-start px-2 py-0.5 rounded-full bg-amber-500 text-white font-bold" style={{ fontSize: '10px' }}>
+            CD — Despliegue Continuo
+          </div>
+          <div className="grid grid-cols-2 gap-1 mt-1">
+            {/* Delivery */}
+            <div className="border border-amber-400 rounded-lg px-1.5 py-1 flex flex-col items-center gap-0.5">
+              <span style={{ fontSize: '13px' }}>🔒</span>
+              <span className="text-amber-700 font-bold" style={{ fontSize: '9px' }}>Delivery</span>
+              <span className="text-slate-500 text-center leading-tight" style={{ fontSize: '9px' }}>Aprobación manual antes de producción</span>
+            </div>
+            {/* Deployment */}
+            <div className="border border-green-500 rounded-lg px-1.5 py-1 flex flex-col items-center gap-0.5">
+              <motion.span
+                animate={{ y: [0, -3, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ fontSize: '13px' }}
+              >
+                🚀
+              </motion.span>
+              <span className="text-green-700 font-bold" style={{ fontSize: '9px' }}>Deployment</span>
+              <span className="text-slate-500 text-center leading-tight" style={{ fontSize: '9px' }}>Automático sin intervención humana</span>
+            </div>
+          </div>
+          <div className="text-center text-slate-400" style={{ fontSize: '8px' }}>← manual gate | auto →</div>
+        </div>
+
+        {/* Column 3 — CT */}
+        <div className="bg-white border border-green-200 rounded-xl p-2 flex flex-col gap-1">
+          <div className="self-start px-2 py-0.5 rounded-full bg-green-600 text-white font-bold" style={{ fontSize: '10px' }}>
+            CT — Entrenamiento Continuo
+          </div>
+          <div className="flex justify-center mt-1">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+            >
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+                <path
+                  d="M12 2 A10 10 0 1 1 4 17"
+                  stroke="#059669"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
+                <polygon points="4,17 1,13 7,13" fill="#059669" />
+              </svg>
+            </motion.div>
+          </div>
+          <div className="flex justify-center">
+            <motion.span
+              className="px-2 py-0.5 rounded-full bg-amber-100 border border-amber-400 text-amber-700 font-bold"
+              style={{ fontSize: '9px' }}
+              animate={{ opacity: [1, 0.4, 1] }}
+              transition={{ duration: 1.4, repeat: Infinity }}
+            >
+              Trigger: deriva detectada
+            </motion.span>
+          </div>
+          <p className="text-slate-500 text-center leading-tight" style={{ fontSize: '9px' }}>
+            Reentrena automáticamente el modelo cuando el contexto cambia
+          </p>
+        </div>
+      </motion.div>
     </div>
   )
 }

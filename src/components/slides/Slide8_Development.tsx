@@ -21,70 +21,172 @@ const stageAnnotations: Record<string, string> = {
   registry: 'v2.0 tagged',
 }
 
-// Items that float through the conveyor belt
-const BELT_ITEMS = [
-  { label: 'commit a3f2', color: '#3b82f6', icon: '📝' },
-  { label: 'build OK', color: '#8b5cf6', icon: '🔨' },
-  { label: 'tests ✓', color: '#06b6d4', icon: '✅' },
-  { label: 'train epoch 50', color: '#10b981', icon: '🧠' },
-  { label: 'F1: 0.94', color: '#f59e0b', icon: '📊' },
-  { label: 'model v2.1', color: '#ef4444', icon: '📦' },
+const PIPELINE_STAGES = [
+  { label: 'Commit',   color: '#3b82f6', metric: '4 commits/min' },
+  { label: 'Build',    color: '#8b5cf6', metric: '1m 42s' },
+  { label: 'Test',     color: '#06b6d4', metric: '98.7% pass' },
+  { label: 'Train',    color: '#10b981', metric: 'epoch 50/50' },
+  { label: 'Eval',     color: '#f59e0b', metric: 'F1: 0.94' },
+  { label: 'Registry', color: '#ef4444', metric: 'v2.0 tagged' },
 ]
 
-function ConveyorBelt() {
+function LivePipelineFlow() {
   return (
-    <div
-      className="relative w-full overflow-hidden rounded-2xl border border-blue-100"
-      style={{ height: 64, background: 'linear-gradient(90deg, #f0f4ff, #e8edff, #f0f4ff)' }}
-    >
-      {/* Track lines */}
-      <div className="absolute inset-x-0" style={{ top: 10, height: 1, background: 'rgba(99,102,241,0.15)' }} />
-      <div className="absolute inset-x-0" style={{ bottom: 10, height: 1, background: 'rgba(99,102,241,0.15)' }} />
-
-      {/* Belt roller left */}
-      <div className="absolute left-0 top-0 bottom-0 w-4 flex items-center justify-center"
-        style={{ background: 'linear-gradient(90deg, #e8edff, transparent)' }}>
-        <motion.div className="w-2 h-12 rounded-full bg-blue-200"
-          animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: 'linear' }} />
-      </div>
-      {/* Belt roller right */}
-      <div className="absolute right-0 top-0 bottom-0 w-4 flex items-center justify-center"
-        style={{ background: 'linear-gradient(270deg, #e8edff, transparent)' }}>
-        <motion.div className="w-2 h-12 rounded-full bg-blue-200"
-          animate={{ rotate: -360 }} transition={{ duration: 2, repeat: Infinity, ease: 'linear' }} />
-      </div>
-
-      {/* Conveyor items */}
-      {BELT_ITEMS.map((item, i) => (
+    <div className="rounded-2xl border border-blue-100 bg-white/80 shadow-sm p-4">
+      {/* Top label */}
+      <div className="flex items-center justify-center gap-2 mb-4">
         <motion.div
-          key={item.label}
-          className="absolute top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-2.5 py-1 rounded-xl border text-xs font-bold whitespace-nowrap"
-          style={{
-            background: `${item.color}15`,
-            borderColor: `${item.color}40`,
-            color: item.color,
-          }}
-          initial={{ x: '110vw' }}
-          animate={{ x: '-20vw' }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: 'linear',
-            delay: i * (10 / BELT_ITEMS.length),
-          }}
-        >
-          <span>{item.icon}</span>
-          <span>{item.label}</span>
-        </motion.div>
-      ))}
+          className="w-2 h-2 rounded-full bg-green-500"
+          animate={{ scale: [1, 1.6, 1], opacity: [0.8, 1, 0.8] }}
+          transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <span className="text-xs font-bold text-slate-600 tracking-widest uppercase">
+          Pipeline en acción
+        </span>
+        <motion.div
+          className="w-2 h-2 rounded-full bg-green-500"
+          animate={{ scale: [1, 1.6, 1], opacity: [0.8, 1, 0.8] }}
+          transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut', delay: 0.7 }}
+        />
+      </div>
 
-      {/* Scanning line */}
-      <motion.div
-        className="absolute top-0 bottom-0 w-0.5 pointer-events-none"
-        style={{ background: 'linear-gradient(to bottom, transparent, rgba(99,102,241,0.5), transparent)' }}
-        animate={{ x: ['10%', '90%', '10%'] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-      />
+      {/* Stages + connecting track */}
+      <div className="relative mb-4">
+        {/* SVG track behind stages */}
+        <div className="absolute inset-0 flex items-center pointer-events-none" style={{ top: 14 }}>
+          <svg width="100%" height="4" style={{ overflow: 'visible' }}>
+            <defs>
+              <linearGradient id="trackGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"   stopColor="#3b82f6" />
+                <stop offset="20%"  stopColor="#8b5cf6" />
+                <stop offset="40%"  stopColor="#06b6d4" />
+                <stop offset="60%"  stopColor="#10b981" />
+                <stop offset="80%"  stopColor="#f59e0b" />
+                <stop offset="100%" stopColor="#ef4444" />
+              </linearGradient>
+            </defs>
+            <line x1="4%" y1="2" x2="96%" y2="2" stroke="url(#trackGrad)" strokeWidth="2" strokeLinecap="round" opacity="0.35" />
+            {/* 3 animated data packets */}
+            {[0, 1, 2].map((i) => (
+              <motion.circle
+                key={i}
+                cy={2}
+                r={4}
+                fill={i === 0 ? '#3b82f6' : i === 1 ? '#10b981' : '#f59e0b'}
+                style={{ filter: `drop-shadow(0 0 4px ${i === 0 ? '#3b82f6' : i === 1 ? '#10b981' : '#f59e0b'})` }}
+                animate={{ cx: ['-5%' as unknown as number, '105%' as unknown as number] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'linear', delay: i * 1.6 }}
+              />
+            ))}
+          </svg>
+        </div>
+
+        {/* Stage boxes */}
+        <div className="flex justify-between gap-1">
+          {PIPELINE_STAGES.map((stage, i) => (
+            <div key={stage.label} className="flex flex-col items-center gap-1 flex-1">
+              {/* Status dot */}
+              <motion.div
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: stage.color, boxShadow: `0 0 6px ${stage.color}80` }}
+                animate={{ scale: [1, 1.4, 1], opacity: [0.75, 1, 0.75] }}
+                transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.28 }}
+              />
+              {/* Number badge */}
+              <div
+                className="w-6 h-6 rounded-full flex items-center justify-center text-white font-black"
+                style={{ backgroundColor: stage.color, fontSize: 10 }}
+              >
+                {i + 1}
+              </div>
+              {/* Label */}
+              <span className="text-slate-700 font-semibold" style={{ fontSize: 9 }}>
+                {stage.label}
+              </span>
+              {/* Metric */}
+              <span className="text-slate-400 font-mono text-center leading-tight" style={{ fontSize: 8 }}>
+                {stage.metric}
+              </span>
+              {/* Progress bar */}
+              <div className="w-full rounded-full overflow-hidden" style={{ height: 3, background: `${stage.color}20` }}>
+                <motion.div
+                  className="h-full rounded-full origin-left"
+                  style={{ backgroundColor: stage.color }}
+                  animate={{ scaleX: [0, 1, 1, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.6 }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CI / CD / CT boxes */}
+      <div className="flex gap-2">
+        {/* CI */}
+        <div
+          className="flex-1 rounded-xl border-2 px-3 py-2 flex flex-col gap-1"
+          style={{ borderColor: '#3b82f640', background: '#3b82f608' }}
+        >
+          <div className="flex items-center gap-1.5">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <motion.polyline
+                points="2,7 5.5,11 12,3"
+                stroke="#3b82f6"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: [0, 1, 1, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </svg>
+            <span className="text-xs font-black" style={{ color: '#3b82f6' }}>CI</span>
+          </div>
+          <div className="text-slate-500" style={{ fontSize: '10px' }}>Commit → Build → Test</div>
+        </div>
+
+        {/* CD */}
+        <div
+          className="flex-1 rounded-xl border-2 px-3 py-2 flex flex-col gap-1"
+          style={{ borderColor: '#f59e0b40', background: '#f59e0b08' }}
+        >
+          <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-0.5">
+              {[0, 1, 2].map((i) => (
+                <motion.span
+                  key={i}
+                  style={{ color: '#f59e0b', fontSize: 10, fontWeight: 900 }}
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.4 }}
+                >
+                  {'>'}
+                </motion.span>
+              ))}
+            </div>
+            <span className="text-xs font-black" style={{ color: '#f59e0b' }}>CD</span>
+          </div>
+          <div className="text-slate-500" style={{ fontSize: '10px' }}>Eval → Registry → Deploy</div>
+        </div>
+
+        {/* CT */}
+        <div
+          className="flex-1 rounded-xl border-2 px-3 py-2 flex flex-col gap-1"
+          style={{ borderColor: '#10b98140', background: '#10b98108' }}
+        >
+          <div className="flex items-center gap-1.5">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+            >
+              <RefreshCw className="w-3 h-3" style={{ color: '#10b981' }} />
+            </motion.div>
+            <span className="text-xs font-black" style={{ color: '#10b981' }}>CT</span>
+          </div>
+          <div className="text-slate-500" style={{ fontSize: '10px' }}>Monitor → Drift → Retrain</div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -123,39 +225,6 @@ function ArrowConnector({ color }: { color: string }) {
     </motion.div>
   )
 }
-
-const CI_CD_CT = [
-  {
-    key: 'CI',
-    label: 'CI',
-    title: 'Integración Continua',
-    desc: 'Compilación + Pruebas',
-    color: '#3b82f6',
-    bg: '#eff6ff',
-    border: '#bfdbfe',
-    Icon: GitBranch,
-  },
-  {
-    key: 'CD',
-    label: 'CD',
-    title: 'Entrega Continua',
-    desc: 'Entrenamiento + Evaluación',
-    color: '#d97706',
-    bg: '#fffbeb',
-    border: '#fde68a',
-    Icon: Package,
-  },
-  {
-    key: 'CT',
-    label: 'CT',
-    title: 'Entrenamiento Continuo',
-    desc: 'Registro + Despliegue',
-    color: '#16a34a',
-    bg: '#f0fdf4',
-    border: '#bbf7d0',
-    Icon: RefreshCw,
-  },
-]
 
 export function Slide8_Development() {
   const { title, subtitle, stages } = slideContent.slide6
@@ -226,56 +295,14 @@ export function Slide8_Development() {
         ))}
       </div>
 
-      {/* Looping conveyor belt */}
+      {/* Live pipeline flow */}
       <motion.div
         className="max-w-5xl mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2, duration: 0.5 }}
       >
-        <div className="flex items-center gap-2 mb-2">
-          <div className="flex-1 h-px bg-blue-100" />
-          <span className="text-xs font-bold text-blue-400 tracking-widest uppercase">Pipeline en acción</span>
-          <div className="flex-1 h-px bg-blue-100" />
-        </div>
-        <ConveyorBelt />
-      </motion.div>
-
-      {/* CI / CD / CT labeled boxes */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.5 }}
-        className="mt-4 max-w-5xl mx-auto"
-      >
-        <div className="grid grid-cols-3 gap-3">
-          {CI_CD_CT.map(({ key, label, title: t, desc, color, bg, border, Icon }) => (
-            <div
-              key={key}
-              className="flex items-start gap-3 rounded-xl border px-4 py-3"
-              style={{ background: bg, borderColor: border }}
-            >
-              <div
-                className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-0.5"
-                style={{ background: `${color}20`, color }}
-              >
-                <Icon className="w-4 h-4" />
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-1.5 mb-0.5">
-                  <span
-                    className="text-xs font-black tracking-widest"
-                    style={{ color }}
-                  >
-                    {label}
-                  </span>
-                  <span className="text-xs font-semibold text-slate-700">{t}</span>
-                </div>
-                <p className="text-[11px] text-slate-500 leading-snug">{desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <LivePipelineFlow />
       </motion.div>
     </div>
   )

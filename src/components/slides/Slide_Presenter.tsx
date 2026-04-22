@@ -113,8 +113,8 @@ export function Slide_Presenter() {
                   {link.icon}
                 </motion.a>
                 <span
-                  className="text-slate-600 font-medium truncate"
-                  style={{ fontSize: '11px', textDecoration: 'none', maxWidth: '180px' }}
+                  className="text-slate-600 font-medium"
+                  style={{ whiteSpace: 'nowrap', textDecoration: 'none', fontSize: '12px' }}
                 >
                   {link.display}
                 </span>
@@ -168,42 +168,42 @@ export function Slide_Presenter() {
                 MLOps: De DevOps al ML en Producción
               </div>
             </div>
+
+            {/* Bottom repo bar */}
+            <motion.a
+              href="https://github.com/rubenalejandrocalderoncorona/mlops-presentation"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 bg-white border border-blue-200 rounded-2xl px-5 py-3 shadow-sm w-full"
+              style={{ textDecoration: 'none' }}
+              variants={repoBarVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover={{ boxShadow: '0 4px 20px rgba(99,102,241,0.18)', borderColor: '#6366f1' }}
+            >
+              <span className="text-indigo-500 flex-shrink-0">
+                <GitHubIcon />
+              </span>
+              <span className="flex flex-col flex-1 min-w-0">
+                <span className="font-bold text-slate-800 text-sm leading-tight">
+                  ¡Revisa el repositorio!
+                </span>
+                <span
+                  className="text-slate-500 text-sm truncate"
+                  style={{ textDecoration: 'none' }}
+                >
+                  github.com/rubenalejandrocalderoncorona/mlops-presentation
+                </span>
+              </span>
+              <span
+                className="text-blue-500 text-xs italic flex-shrink-0"
+                style={{ textDecoration: 'none' }}
+              >
+                Feel free to explore →
+              </span>
+            </motion.a>
           </motion.div>
         </div>
-
-        {/* Bottom repo bar */}
-        <motion.a
-          href="https://github.com/rubenalejandrocalderoncorona/mlops-presentation"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 bg-white border border-blue-200 rounded-2xl px-5 py-3 shadow-sm mt-4 max-w-md w-full"
-          style={{ textDecoration: 'none' }}
-          variants={repoBarVariants}
-          initial="hidden"
-          animate="visible"
-          whileHover={{ boxShadow: '0 4px 20px rgba(99,102,241,0.18)', borderColor: '#6366f1' }}
-        >
-          <span className="text-indigo-500 flex-shrink-0">
-            <GitHubIcon />
-          </span>
-          <span className="flex flex-col flex-1 min-w-0">
-            <span className="font-bold text-slate-800 text-sm leading-tight">
-              ¡Revisa el repositorio!
-            </span>
-            <span
-              className="text-slate-500 text-sm truncate"
-              style={{ textDecoration: 'none' }}
-            >
-              github.com/rubenalejandrocalderoncorona/mlops-presentation
-            </span>
-          </span>
-          <span
-            className="text-blue-500 text-xs italic flex-shrink-0"
-            style={{ textDecoration: 'none' }}
-          >
-            Feel free to explore →
-          </span>
-        </motion.a>
       </div>
     </div>
   )

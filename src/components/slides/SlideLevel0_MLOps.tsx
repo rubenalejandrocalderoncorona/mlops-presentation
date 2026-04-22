@@ -35,9 +35,9 @@ export function SlideLevel0_MLOps() {
         </p>
       </motion.div>
 
-      <div className="flex gap-4 flex-1 min-h-0">
+      <div className="relative flex flex-col flex-1 min-h-0">
         {/* Main content */}
-        <div className="flex-1 flex flex-col gap-5">
+        <div className="flex flex-col gap-5 max-w-3xl mx-auto w-full pr-[165px]">
           {/* Workflow boxes */}
           <div className="flex items-center justify-center gap-1">
             {STEPS.map((step, i) => (
@@ -124,7 +124,7 @@ export function SlideLevel0_MLOps() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.8, duration: 0.5 }}
-          className="w-fit flex-shrink-0 max-w-[160px] rounded-2xl border border-blue-200 bg-white/80 p-3 text-xs text-slate-600 leading-relaxed shadow-sm flex flex-col gap-1.5"
+          className="absolute top-0 right-0 w-[155px] rounded-2xl border border-blue-200 bg-white/80 p-3 text-xs text-slate-600 leading-relaxed shadow-sm flex flex-col gap-1.5"
         >
           <div className="flex items-center gap-1 text-blue-700 font-bold text-[11px]">
             <span>📖</span>
