@@ -35,9 +35,9 @@ export function SlideLevel0_MLOps() {
         </p>
       </motion.div>
 
-      <div className="relative flex flex-col flex-1 min-h-0">
+      <div className="flex flex-row gap-3 flex-1 min-h-0">
         {/* Main content */}
-        <div className="flex flex-col gap-5 max-w-3xl mx-auto w-full pr-[165px]">
+        <div className="flex-1 min-w-0 flex flex-col gap-5">
           {/* Workflow boxes */}
           <div className="flex items-center justify-center gap-1">
             {STEPS.map((step, i) => (
@@ -60,7 +60,7 @@ export function SlideLevel0_MLOps() {
                   </motion.div>
 
                   {/* Box */}
-                  <div className="w-[100px] h-[72px] rounded-xl border-2 bg-white shadow-md flex items-center justify-center text-center"
+                  <div className="w-[85px] h-[64px] rounded-xl border-2 bg-white shadow-md flex items-center justify-center text-center"
                     style={{ borderColor: step.color }}>
                     <span className="text-slate-700 font-semibold text-sm leading-tight whitespace-pre-line">
                       {step.label}
@@ -77,7 +77,7 @@ export function SlideLevel0_MLOps() {
             <div className="absolute inset-x-0 h-px bg-slate-200 top-1/2" />
             <motion.div
               className="absolute flex items-center justify-center w-8 h-8 rounded-full border-4 border-blue-500 bg-white shadow-lg text-base z-10"
-              animate={{ x: [0, 490, 0] }}
+              animate={{ x: [0, 380, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.5 }}
               title="Científico de datos haciendo todo a mano"
             >
@@ -124,7 +124,7 @@ export function SlideLevel0_MLOps() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.8, duration: 0.5 }}
-          className="absolute top-0 right-0 w-[155px] rounded-2xl border border-blue-200 bg-white/80 p-3 text-xs text-slate-600 leading-relaxed shadow-sm flex flex-col gap-1.5"
+          className="w-[155px] flex-shrink-0 rounded-2xl border border-blue-200 bg-white/80 p-3 text-xs text-slate-600 leading-relaxed shadow-sm flex flex-col gap-1.5"
         >
           <div className="flex items-center gap-1 text-blue-700 font-bold text-[11px]">
             <span>📖</span>

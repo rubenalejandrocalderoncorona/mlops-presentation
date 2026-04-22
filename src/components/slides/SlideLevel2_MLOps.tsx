@@ -105,9 +105,9 @@ export function SlideLevel2_MLOps() {
         </p>
       </motion.div>
 
-      <div className="relative flex flex-col flex-1 min-h-0">
+      <div className="flex flex-row gap-3 flex-1 min-h-0">
         {/* Main diagram */}
-        <div className="flex flex-col gap-2.5 max-w-3xl mx-auto w-full pr-[165px]">
+        <div className="flex-1 min-w-0 flex flex-col gap-2.5">
 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }} className="flex gap-2 flex-wrap">
             {CICD_STEPS.map(step => (
@@ -215,7 +215,7 @@ export function SlideLevel2_MLOps() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.9, duration: 0.5 }}
-          className="absolute top-0 right-0 w-[155px] rounded-2xl border border-indigo-200 bg-white/80 p-3 text-xs text-slate-600 leading-relaxed shadow-sm flex flex-col gap-1.5"
+          className="w-[155px] flex-shrink-0 rounded-2xl border border-indigo-200 bg-white/80 p-3 text-xs text-slate-600 leading-relaxed shadow-sm flex flex-col gap-1.5"
         >
           <div className="flex items-center gap-1 text-indigo-700 font-bold text-[11px]">
             <span>📖</span>

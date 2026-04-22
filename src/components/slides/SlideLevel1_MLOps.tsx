@@ -62,17 +62,9 @@ export function SlideLevel1_MLOps() {
         </p>
       </motion.div>
 
-      <div className="relative flex flex-col flex-1 min-h-0">
+      <div className="flex flex-row gap-3 flex-1 min-h-0">
         {/* Main diagram */}
-        <div className="flex flex-col gap-3 max-w-3xl mx-auto w-full pr-[165px] relative">
-
-          {/* Vertical separator */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-px border-l-2 border-dashed border-slate-300 z-10" />
-          <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-slate-100 border border-slate-300 rounded-full px-2 py-0.5 text-[9px] font-bold text-slate-500 z-20 whitespace-nowrap">
-            ML | Ops
-          </div>
-
-          {/* Top row: Experiment env — MANUAL */}
+        <div className="flex-1 min-w-0 flex flex-col gap-3">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -200,7 +192,7 @@ export function SlideLevel1_MLOps() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.9, duration: 0.5 }}
-          className="absolute top-0 right-0 w-[155px] rounded-2xl border border-blue-200 bg-white/80 p-3 text-xs text-slate-600 leading-relaxed shadow-sm flex flex-col gap-1.5"
+          className="w-[155px] flex-shrink-0 rounded-2xl border border-blue-200 bg-white/80 p-3 text-xs text-slate-600 leading-relaxed shadow-sm flex flex-col gap-1.5"
         >
           <div className="flex items-center gap-1 text-blue-700 font-bold text-[11px]">
             <span>📖</span>
