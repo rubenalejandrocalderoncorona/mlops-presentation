@@ -12,23 +12,29 @@ export function SlideRedirect({ onServerOffline }: SlideRedirectProps) {
 
   useEffect(() => {
     let cancelled = false
-    const check = async () => {
-      try {
-        // fetch with a short timeout — success means server is up
-        const ctrl = new AbortController()
-        const t = setTimeout(() => ctrl.abort(), 2500)
-        await fetch('http://localhost:5174', { signal: ctrl.signal, mode: 'no-cors' })
-        clearTimeout(t)
-        if (!cancelled) setServer('online')
-      } catch {
-        if (!cancelled) {
-          setServer('offline')
-          onServerOffline?.()
-        }
-      }
+    // WebSocket to Vite's HMR port — opens instantly if server is up,
+    // fires onerror immediately if connection is refused.
+    const ws = new WebSocket('ws://localhost:5174')
+    const timer = setTimeout(() => {
+      ws.close()
+      if (!cancelled) { setServer('offline'); onServerOffline?.() }
+    }, 3000)
+
+    ws.onopen = () => {
+      clearTimeout(timer)
+      ws.close()
+      if (!cancelled) setServer('online')
     }
-    check()
-    return () => { cancelled = true }
+    ws.onerror = () => {
+      clearTimeout(timer)
+      if (!cancelled) { setServer('offline'); onServerOffline?.() }
+    }
+
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+      ws.close()
+    }
   }, [onServerOffline])
 
   const handleOpen = () => window.open('http://localhost:5174', '_blank')
