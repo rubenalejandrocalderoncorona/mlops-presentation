@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 
-export const TOTAL_SLIDES = 14
+export const TOTAL_SLIDES = 15
 
 // Max anim steps per slide index (0 = no sub-steps)
 const SLIDE_ANIM_STEPS: Record<number, number> = {

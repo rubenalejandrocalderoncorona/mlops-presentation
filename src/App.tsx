@@ -15,6 +15,7 @@ import { Slide9_InteractiveDemo } from './components/slides/Slide9_InteractiveDe
 import { SlideLevel0_MLOps } from './components/slides/SlideLevel0_MLOps'
 import { SlideLevel1_MLOps } from './components/slides/SlideLevel1_MLOps'
 import { SlideLevel2_MLOps } from './components/slides/SlideLevel2_MLOps'
+import { SlideRedirect } from './components/slides/SlideRedirect'
 
 type SlideComponent = React.ComponentType<{ animStep?: number }>
 
@@ -33,6 +34,7 @@ const slides: SlideComponent[] = [
   SlideLevel2_MLOps,     // 11
   Slide8_Development,    // 12
   Slide9_InteractiveDemo, // 13
+  SlideRedirect,          // 14
 ]
 
 // Slides that receive animStep prop (indices in slides array)
