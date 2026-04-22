@@ -72,21 +72,25 @@ export function SlideLevel1_MLOps() {
             ML | Ops
           </div>
 
-          {/* Top row: Experiment env */}
+          {/* Top row: Experiment env — MANUAL */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="rounded-2xl bg-blue-50 border-2 border-blue-200 px-3 py-2 flex flex-col gap-2"
+            className="rounded-2xl border-2 border-dashed border-amber-300 bg-amber-50/50 px-3 py-2 flex flex-col gap-2 relative"
           >
-            <div className="text-[10px] font-bold text-blue-600 uppercase tracking-wide">Experiment env</div>
+            {/* MANUAL badge */}
+            <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-300 text-[9px] font-bold whitespace-nowrap">
+              MANUAL 🖐
+            </div>
+            <div className="text-[10px] font-bold text-amber-700 uppercase tracking-wide">🖐 Desarrollo Manual (Experiment env)</div>
             <div className="flex items-center gap-2 flex-wrap">
-              <div className="px-2 py-1.5 rounded-lg bg-blue-100 border border-blue-300 text-[10px] font-semibold text-blue-800 whitespace-nowrap">
+              <div className="px-2 py-1.5 rounded-lg bg-amber-100 border border-amber-300 text-[10px] font-semibold text-amber-800 whitespace-nowrap">
                 Data Analysis
               </div>
               <span className="text-slate-400 text-xs">→</span>
               <div className="flex flex-col items-start gap-1">
-                <div className="text-[9px] font-semibold text-blue-500 ml-1">Orchestrated Experiment</div>
+                <div className="text-[9px] font-semibold text-amber-600 ml-1">Orchestrated Experiment</div>
                 <PipelineBox steps={PIPELINE_STEPS} />
               </div>
               <span className="text-slate-400 text-xs">→</span>
@@ -100,6 +104,13 @@ export function SlideLevel1_MLOps() {
             </div>
           </motion.div>
 
+          {/* Manual vs Automatic separator row */}
+          <div className="flex justify-between items-center px-1">
+            <span className="text-[10px] text-amber-600 font-medium">← MANUAL: el científico ejecuta manualmente</span>
+            <div className="w-px h-4 bg-slate-300 flex-shrink-0 mx-2" />
+            <span className="text-[10px] text-green-600 font-medium">AUTOMÁTICO: trigger activa solo →</span>
+          </div>
+
           {/* Arrow from Source Repo down */}
           <div className="flex justify-end pr-4">
             <div className="flex items-center gap-1 text-slate-500 text-[11px]">
@@ -107,14 +118,19 @@ export function SlideLevel1_MLOps() {
             </div>
           </div>
 
-          {/* Bottom row: Production env */}
+          {/* Bottom row: Production env — AUTOMATIZADO */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="rounded-2xl bg-green-50 border-2 border-green-200 px-3 py-2 flex flex-col gap-2 relative overflow-hidden"
+            className="rounded-2xl border-2 border-green-300 bg-green-50 px-3 py-2 flex flex-col gap-2 relative overflow-hidden"
+            style={{ boxShadow: '0 0 0 1px #86efac33, 0 4px 16px #16a34a18' }}
           >
-            <div className="text-[10px] font-bold text-green-700 uppercase tracking-wide">Production env</div>
+            {/* AUTOMATIZADO badge */}
+            <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 border border-green-300 text-[9px] font-bold whitespace-nowrap">
+              AUTOMATIZADO ⚡
+            </div>
+            <div className="text-[10px] font-bold text-green-700 uppercase tracking-wide">⚡ Pipeline Automatizado (Production env)</div>
             <div className="flex items-center gap-2 flex-wrap">
               <Drum color="#16a34a" label="Feature Store" />
               <span className="text-slate-400 text-xs">→</span>
@@ -184,7 +200,7 @@ export function SlideLevel1_MLOps() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.9, duration: 0.5 }}
-          className="w-[200px] flex-shrink-0 rounded-2xl border border-blue-200 bg-white/80 p-3 text-xs text-slate-600 leading-relaxed shadow-sm flex flex-col gap-1.5"
+          className="w-fit flex-shrink-0 max-w-[160px] rounded-2xl border border-blue-200 bg-white/80 p-3 text-xs text-slate-600 leading-relaxed shadow-sm flex flex-col gap-1.5"
         >
           <div className="flex items-center gap-1 text-blue-700 font-bold text-[11px]">
             <span>📖</span>

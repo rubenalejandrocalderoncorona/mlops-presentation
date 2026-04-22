@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { GitBranch, Package, CheckCircle, Cpu, BarChart2, Archive, ChevronRight } from 'lucide-react'
+import { GitBranch, Package, CheckCircle, Cpu, BarChart2, Archive, RefreshCw } from 'lucide-react'
 import { slideContent } from '../../data/slideContent'
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -9,6 +9,16 @@ const iconMap: Record<string, React.ReactNode> = {
   cpu: <Cpu className="w-6 h-6" />,
   'bar-chart-2': <BarChart2 className="w-6 h-6" />,
   archive: <Archive className="w-6 h-6" />,
+}
+
+// Per-stage annotation chips
+const stageAnnotations: Record<string, string> = {
+  source: 'git commit',
+  build: 'docker build',
+  test: '47/47 ✓',
+  train: 'epoch 50',
+  eval: 'F1: 0.94',
+  registry: 'v2.0 tagged',
 }
 
 // Items that float through the conveyor belt
@@ -22,7 +32,6 @@ const BELT_ITEMS = [
 ]
 
 function ConveyorBelt() {
-  // Each item animates from right to left across the belt
   return (
     <div
       className="relative w-full overflow-hidden rounded-2xl border border-blue-100"
@@ -80,6 +89,74 @@ function ConveyorBelt() {
   )
 }
 
+// Animated SVG arrow connector between stage boxes
+function ArrowConnector({ color }: { color: string }) {
+  return (
+    <motion.div
+      className="self-start mt-8 mx-1 flex-shrink-0"
+      initial={{ opacity: 0, scaleX: 0 }}
+      animate={{ opacity: 1, scaleX: 1 }}
+      transition={{ duration: 0.4 }}
+    >
+      <svg width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <motion.line
+          x1="2" y1="10" x2="22" y2="10"
+          stroke={color}
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        />
+        <motion.polyline
+          points="16,4 24,10 16,16"
+          fill="none"
+          stroke={color}
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.3, delay: 0.3, ease: 'easeOut' }}
+        />
+      </svg>
+    </motion.div>
+  )
+}
+
+const CI_CD_CT = [
+  {
+    key: 'CI',
+    label: 'CI',
+    title: 'Integración Continua',
+    desc: 'Compilación + Pruebas',
+    color: '#3b82f6',
+    bg: '#eff6ff',
+    border: '#bfdbfe',
+    Icon: GitBranch,
+  },
+  {
+    key: 'CD',
+    label: 'CD',
+    title: 'Entrega Continua',
+    desc: 'Entrenamiento + Evaluación',
+    color: '#d97706',
+    bg: '#fffbeb',
+    border: '#fde68a',
+    Icon: Package,
+  },
+  {
+    key: 'CT',
+    label: 'CT',
+    title: 'Entrenamiento Continuo',
+    desc: 'Registro + Despliegue',
+    color: '#16a34a',
+    bg: '#f0fdf4',
+    border: '#bbf7d0',
+    Icon: RefreshCw,
+  },
+]
+
 export function Slide8_Development() {
   const { title, subtitle, stages } = slideContent.slide6
 
@@ -95,17 +172,19 @@ export function Slide8_Development() {
         <p className="text-slate-500 text-lg">{subtitle}</p>
       </motion.div>
 
-      <div className="flex items-center justify-center gap-0 max-w-5xl mx-auto flex-wrap mb-6">
+      {/* Stage pipeline row */}
+      <div className="flex items-start justify-center gap-0 max-w-5xl mx-auto flex-wrap mb-6">
         {stages.map((stage, i) => (
-          <div key={stage.id} className="flex items-center">
+          <div key={stage.id} className="flex items-start">
             <motion.div
               className="flex flex-col items-center"
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 + i * 0.15, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
+              {/* Icon box */}
               <div
-                className="w-20 h-20 rounded-2xl border-2 flex flex-col items-center justify-center mb-3 hover:scale-110 transition-transform cursor-default bg-white"
+                className="w-20 h-20 rounded-2xl border-2 flex flex-col items-center justify-center bg-white hover:scale-110 transition-transform cursor-default"
                 style={{
                   borderColor: stage.color,
                   boxShadow: `0 4px 20px ${stage.color}35`,
@@ -114,7 +193,24 @@ export function Slide8_Development() {
               >
                 {iconMap[stage.icon]}
               </div>
-              <span className="text-slate-700 text-xs text-center font-medium w-20 leading-tight">{stage.label}</span>
+
+              {/* Stage label */}
+              <span className="text-slate-700 text-xs text-center font-medium w-20 leading-tight mt-2">
+                {stage.label}
+              </span>
+
+              {/* Annotation chip */}
+              <span
+                className="text-[9px] font-mono px-1.5 py-0.5 rounded-full mt-1"
+                style={{
+                  background: `${stage.color}25`,
+                  color: stage.color,
+                }}
+              >
+                {stageAnnotations[stage.id]}
+              </span>
+
+              {/* Pulse dot */}
               <motion.div
                 className="w-2 h-2 rounded-full mt-2"
                 style={{ backgroundColor: stage.color }}
@@ -124,14 +220,7 @@ export function Slide8_Development() {
             </motion.div>
 
             {i < stages.length - 1 && (
-              <motion.div
-                initial={{ opacity: 0, scaleX: 0 }}
-                animate={{ opacity: 1, scaleX: 1 }}
-                transition={{ delay: 0.4 + i * 0.15, duration: 0.4 }}
-                className="mx-2 mb-8"
-              >
-                <ChevronRight className="w-6 h-6 text-blue-300" />
-              </motion.div>
+              <ArrowConnector color={stages[i + 1].color} />
             )}
           </div>
         ))}
@@ -152,19 +241,40 @@ export function Slide8_Development() {
         <ConveyorBelt />
       </motion.div>
 
+      {/* CI / CD / CT labeled boxes */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 0.5 }}
-        className="mt-4 text-center"
+        className="mt-4 max-w-5xl mx-auto"
       >
-        <div className="inline-flex gap-6 bg-white border border-blue-100 shadow-sm rounded-full px-6 py-3 text-sm text-slate-500">
-          <span className="text-blue-500 font-bold">CI</span>
-          <span>→ compilación + pruebas</span>
-          <span className="text-amber-500 font-bold">CD</span>
-          <span>→ entrenamiento + evaluación</span>
-          <span className="text-green-600 font-bold">CT</span>
-          <span>→ registro + despliegue</span>
+        <div className="grid grid-cols-3 gap-3">
+          {CI_CD_CT.map(({ key, label, title: t, desc, color, bg, border, Icon }) => (
+            <div
+              key={key}
+              className="flex items-start gap-3 rounded-xl border px-4 py-3"
+              style={{ background: bg, borderColor: border }}
+            >
+              <div
+                className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-0.5"
+                style={{ background: `${color}20`, color }}
+              >
+                <Icon className="w-4 h-4" />
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5 mb-0.5">
+                  <span
+                    className="text-xs font-black tracking-widest"
+                    style={{ color }}
+                  >
+                    {label}
+                  </span>
+                  <span className="text-xs font-semibold text-slate-700">{t}</span>
+                </div>
+                <p className="text-[11px] text-slate-500 leading-snug">{desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </motion.div>
     </div>
