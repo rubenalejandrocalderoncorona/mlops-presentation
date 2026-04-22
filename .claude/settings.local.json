@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create *)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(pkill -f \"vite\")",
+      "Bash(npm run *)",
+      "Bash(open http://localhost:5173/)",
+      "Bash(git *)"
+    ]
+  }
+}
