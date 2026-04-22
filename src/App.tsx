@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { usePresentation } from './hooks/usePresentation'
 import { Navigation } from './components/core/Navigation'
+import { Slide_Presenter } from './components/slides/Slide_Presenter'
 import { Slide0_History } from './components/slides/Slide0_History'
 import { Slide1_DevOpsCICD } from './components/slides/Slide1_DevOpsCICD'
 import { Slide2_Roles } from './components/slides/Slide2_Roles'
@@ -15,20 +16,21 @@ import { Slide9_InteractiveDemo } from './components/slides/Slide9_InteractiveDe
 type SlideComponent = React.ComponentType<{ animStep?: number }>
 
 const slides: SlideComponent[] = [
-  Slide0_History,
-  Slide1_DevOpsCICD,
-  Slide2_Roles,
-  Slide3_DriftExplainer,
-  Slide4_TechDebt,
-  Slide5_Lifecycle,
-  Slide6_Independent,
-  Slide7_DevOpsToMLOps,
-  Slide8_Development,
-  Slide9_InteractiveDemo,
+  Slide_Presenter,   // 0
+  Slide0_History,    // 1
+  Slide1_DevOpsCICD, // 2 — animStep: 0-3 (4 acts)
+  Slide2_Roles,      // 3 — animStep: 0-7
+  Slide3_DriftExplainer, // 4
+  Slide4_TechDebt,   // 5
+  Slide5_Lifecycle,  // 6 — animStep: 0-10
+  Slide6_Independent, // 7
+  Slide7_DevOpsToMLOps, // 8
+  Slide8_Development, // 9
+  Slide9_InteractiveDemo, // 10
 ]
 
-// Slides that receive animStep prop
-const ANIMATED_SLIDES = new Set([2, 5])
+// Slides that receive animStep prop (indices in slides array)
+const ANIMATED_SLIDES = new Set([2, 3, 6])
 
 const slideVariants = {
   enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
